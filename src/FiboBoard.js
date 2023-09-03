@@ -12,6 +12,30 @@ const array2D = Array(boardDimensions.height).fill().map((row) => Array(boardDim
 export default function FiboBoard() {
 
   const [fiboCells, setFiboCells] = useState(array2D)
+  const [fiboCellsCopy, setFiboCellsCopy] = useState([...array2D])
+
+  const increment = (e, clickedRowIndex, clickedColumnIndex) => {
+    e.preventDefault()
+
+    const copy = fiboCells.map((row, boardRowIndex) => {
+      // increment row
+      if(boardRowIndex === clickedRowIndex) {
+        row = row.map((el) => el === 'x' ? el : el +=1)
+      } else {
+        // increment column
+        row = row.map((el, boardColIndex) => {
+          if(boardColIndex === clickedColumnIndex) {
+            if(el === 'x') return el
+            el += 1
+          }
+          return el
+        })
+      }
+      return row
+    })
+
+    setFiboCells(copy)
+  }
 
   return (
     <div className="center">
@@ -22,7 +46,13 @@ export default function FiboBoard() {
     }}>
       {
         fiboCells.map((row, i) => row.map((col, j) => (
-        <Cell value={col} />
+          <Cell 
+          increment={increment}
+          value={col} 
+          colour={fiboCells[i][j] === 'x' ? 'green' : (fiboCells[i][j] === fiboCellsCopy[i][j] ? "#E0E0E0" : "yellow")} 
+          rowIndex={i} 
+          colIndex={j}
+          />
         )))
       }
     </div>
