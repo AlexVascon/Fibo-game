@@ -11,7 +11,9 @@ const array2D = Array(boardDimensions.height).fill().map((row) => Array(boardDim
 
 export default function FiboBoard() {
   const [fiboCells, setFiboCells] = useState(array2D)
+  // for colour change
   const [fiboCellsCopy, setFiboCellsCopy] = useState([...array2D])
+
 
   const clickAction = (e, clickedRowIndex, clickedColumnIndex) => {
     e.preventDefault()
@@ -44,6 +46,7 @@ export default function FiboBoard() {
   const flashColourChange = (updatedCells) => {
     setFiboCells(updatedCells)
 
+    // increment difference is compared in cell then reset
     setTimeout(() => {
       setFiboCellsCopy(updatedCells)
     }, 500)
