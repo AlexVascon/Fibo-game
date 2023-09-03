@@ -1,7 +1,7 @@
-export default function Cell ({value, colour, rowIndex, colIndex, increment}) {
+export default function Cell ({value, colour, rowIndex, colIndex, clickAction}) {
   return (
     <div
-    onClick={(e) => increment(e, rowIndex, colIndex)}
+    onClick={(e) => clickAction(e, rowIndex, colIndex)}
     style={{
       border: '1px solid black',
       display: 'flex',

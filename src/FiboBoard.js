@@ -10,14 +10,19 @@ const boardDimensions = {
 const array2D = Array(boardDimensions.height).fill().map((row) => Array(boardDimensions.width).fill(0))
 
 export default function FiboBoard() {
-
   const [fiboCells, setFiboCells] = useState(array2D)
   const [fiboCellsCopy, setFiboCellsCopy] = useState([...array2D])
 
-  const increment = (e, clickedRowIndex, clickedColumnIndex) => {
+  const clickAction = (e, clickedRowIndex, clickedColumnIndex) => {
     e.preventDefault()
 
-    const copy = fiboCells.map((row, boardRowIndex) => {
+    const updatedCells = increment(clickedRowIndex, clickedColumnIndex)
+    flashColourChange(updatedCells)
+  }
+
+  const increment = (clickedRowIndex, clickedColumnIndex) => {
+
+    return fiboCells.map((row, boardRowIndex) => {
       // increment row
       if(boardRowIndex === clickedRowIndex) {
         row = row.map((el) => el === 'x' ? el : el +=1)
@@ -33,8 +38,14 @@ export default function FiboBoard() {
       }
       return row
     })
+  }
 
-    setFiboCells(copy)
+  const flashColourChange = (updatedCells) => {
+    setFiboCells(updatedCells)
+
+    setTimeout(() => {
+      setFiboCellsCopy(updatedCells)
+    }, 500)
   }
 
   return (
@@ -47,7 +58,7 @@ export default function FiboBoard() {
       {
         fiboCells.map((row, i) => row.map((col, j) => (
           <Cell 
-          increment={increment}
+          clickAction={clickAction}
           value={col} 
           colour={fiboCells[i][j] === 'x' ? 'green' : (fiboCells[i][j] === fiboCellsCopy[i][j] ? "#E0E0E0" : "yellow")} 
           rowIndex={i} 
